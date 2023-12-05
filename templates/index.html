@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record a Song</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-image: url('{{ url_for("static", filename="fondo.gif") }}');
+            background-repeat: no-repeat;
+            background-size: auto;
+            background-position: center top;
+
+            color: white;
+        }
+
+        h1 {
+            margin-top: 50px;
+            font-size: 2em;
+        }
+
+        #recordButton {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1.5em;
+            margin: 20px 0;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        #recordButton:hover {
+            background-color: #45a049;
+        }
+
+        #recordingAnimation {
+            display: none;
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #4CAF50;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.6;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Record a Song</h1>
+    <button id="recordButton" onclick="startRecording()">Record</button>
+    <div id="recordingAnimation">&#9679; &#9679; &#9679; Recording...</div>
+
+    <script>
+        function startRecording() {
+            // Disable the button during recording
+            document.getElementById('recordButton').disabled = true;
+
+            // Show the recording animation
+            document.getElementById('recordingAnimation').style.display = 'inline';
+
+            // Simulate recording time (adjust the delay as needed)
+            setTimeout(function () {
+                // Enable the button after recording
+                document.getElementById('recordButton').disabled = false;
+
+                // Hide the recording animation
+                document.getElementById('recordingAnimation').style.display = 'none';
+
+                // Redirect to the result page
+                window.location.href = "/result";
+            }, 5000); // 5000 milliseconds (5 seconds) as an example
+        }
+    </script>
+</body>
+
+</html>
