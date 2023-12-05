@@ -5,14 +5,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from urllib.request import urlretrieve
 
-sp = spotipy.Spotify(
-    auth_manager=SpotifyOAuth(
-        client_id="55f17b48afbb462f9f1b2b33c945dd9a",
-        client_secret="81473b6319564dfe8795d3a1b9dc4218",
-        redirect_uri="http://localhost:1234/",
-        scope="user-library-read",
-    )
-)
+
 
 chunk = 1024
 sample_format = pyaudio.paInt16
