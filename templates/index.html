@@ -2,19 +2,24 @@
 <html lang="en">
 
 <head>
+    <!-- Meta tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Record a Song</title>
+    
+    <!-- Styles -->
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Roboto', sans-serif;
             text-align: center;
             background-image: url('{{ url_for("static", filename="fondo.gif") }}');
             background-repeat: no-repeat;
+            background-color: black;
             background-size: auto;
             background-position: center top;
-
             color: white;
+            margin: 0;
         }
 
         h1 {
@@ -41,54 +46,93 @@
             background-color: #45a049;
         }
 
-        #recordingAnimation {
-            display: none;
+        #recordingContainer {
+            position: relative;
             margin-top: 20px;
-            font-size: 1.5em;
-            color: #4CAF50;
-            animation: pulse 1s infinite;
         }
 
-        @keyframes pulse {
-            0% {
-                opacity: 0.6;
-            }
+        /* New style to hide the button */
+        #recordButton.hidden {
+            display: none;
+        }
 
-            50% {
-                opacity: 1;
-            }
+        /* Estilos para la tabla */
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            border: 2px solid white;
+            background-color: white;
+        }
 
-            100% {
-                opacity: 0.6;
-            }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid white;
+            color: black;
+        }
+
+        th {
+            background-color: white;
+            color: black;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
         }
     </style>
 </head>
 
 <body>
-    <h1>Record a Song</h1>
+    <div>
+        <h1>THE MOST OVERFITTED GENRE RECOGNIZER IN</h1>
+        <img src="{{ url_for('static', filename='udp.png') }}" alt="UDP" id="UDP" style="width: 400px; height: auto;">
+    </div>
     <button id="recordButton" onclick="startRecording()">Record</button>
-    <div id="recordingAnimation">&#9679; &#9679; &#9679; Recording...</div>
+    <div id="recordingContainer">
+        <div id="recordingAnimation" style="display: none;">
+            <img src="{{ url_for('static', filename='loading2.gif') }}" alt="Recording..." id="rotatingCircle" style="width: 85px; height: 85px;">
+        </div>
+    </div>
+
+    <table border="1">
+        <tr>
+            <th>Cancion</th>
+            <th>Genero Predicho</th>
+            <th>Genero Real</th>
+        </tr>
+        {% for item in items %}
+        <tr>
+            <td>{{ item['cancion'] }}</td>
+            <td>{{ item['genero_predicho'] }}</td>
+            <td>{{ item['genero_real'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
     <script>
         function startRecording() {
-            // Disable the button during recording
-            document.getElementById('recordButton').disabled = true;
-
+            // Hide the record button
+            document.getElementById('recordButton').classList.add('hidden');
+    
             // Show the recording animation
-            document.getElementById('recordingAnimation').style.display = 'inline';
-
+            document.getElementById('recordingAnimation').style.display = 'block'; // Cambia display a 'block'
+    
             // Simulate recording time (adjust the delay as needed)
             setTimeout(function () {
-                // Enable the button after recording
-                document.getElementById('recordButton').disabled = false;
-
-                // Hide the recording animation
-                document.getElementById('recordingAnimation').style.display = 'none';
-
                 // Redirect to the result page
                 window.location.href = "/record";
-            }, 5000); // 5000 milliseconds (5 seconds) as an example
+    
+                // Show the record button again after redirecting
+                setTimeout(function () {
+                    document.getElementById('recordButton').classList.remove('hidden');
+                    document.getElementById('recordingAnimation').style.display = 'none'; // Oculta la imagen nuevamente
+                }, 1000); // Ajusta este tiempo si es necesario
+            }, 5000); // 5000 milisegundos (5 segundos) como ejemplo
         }
     </script>
 </body>
