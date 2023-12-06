@@ -10,30 +10,31 @@ from urllib.request import urlretrieve
 from red import predecir
 
 
-<<<<<<< HEAD
 def button(filename):
     sp = authenticate_spotify()
     record_audio(filename)
     output = execute_recognition_command(filename)
-    genre_predicted = predecir('jazz1.wav')
+    genre_predicted = predecir('record.wav')
+
     if output:
         artist_name, track_name = extract_artist_and_track(output)
         print(track_name)
         genero = search_and_download_preview(sp, track_name)
         if not genero:
-            genre_predicted, artist_name, track_name = genRandomGenre(), "Artist Name", "Track_Name"
+            genre_predicted, artist_name, track_name, real_genre = genRandomGenre(
+            ), "No se encontró el artista", "No se encontró el nombre de la canción", "pop"
             print(genre_predicted)
-            return genre_predicted, artist_name, track_name
-        genre_predicted = genero
-        return genre_predicted, artist_name, track_name
-        genre_predicted, artist_name, track_name = genRandomGenre(), "Artist Name", "Track_Name"
-        print(genre_predicted)
-        return genre_predicted, artist_name, track_name
+            return genre_predicted, artist_name, track_name, real_genre
+
+        real_genre = genero
+        return genre_predicted, artist_name, track_name, real_genre
+
     else:
-        genre_predicted, artist_name, track_name = genRandomGenre(), "Artist Name", "Track_Name"
+        genre_predicted, artist_name, track_name, real_genre = genRandomGenre(
+        ), "Artist Name", "Track_Name", "pop"
         print(genre_predicted)
-        return genre_predicted, artist_name, track_name
-        #print("No se pudo reconocer la canción.")
+        return genre_predicted, artist_name, track_name, real_genre
+        # print("No se pudo reconocer la canción.")
     # print(artist_name)
     # print(track_name)
     return genre_predicted, artist_name, track_name
@@ -42,15 +43,12 @@ def button(filename):
 def authenticate_spotify():
     return Spotify(
         auth_manager=SpotifyOAuth(
-            client_id="123",
-            client_secret="123",
-            redirect_uri="http://localhost:1234",
+            client_id="ddab0cc515d645dbb828da2e899315cc",
+            client_secret="2328d592588d4d8dac54e272cf2f67fb",
+            redirect_uri="http://localhost:1234/",
             scope="user-library-read",
         )
     )
-# Grabar
-=======
->>>>>>> origin/main
 
 
 def record_audio(filename, seconds=10, chunk=1024, sample_format=pyaudio.paInt16,
@@ -61,7 +59,7 @@ def record_audio(filename, seconds=10, chunk=1024, sample_format=pyaudio.paInt16
     Args:
         filename (str): The name of the file to save the recorded audio to.
         seconds (int, optional): The duration of the recording in seconds. Defaults to 10.
-        chunk (int, optional): The number of audio frames per buffer. Defaults to 1024. 
+        chunk (int, optional): The number of audio frames per buffer. Defaults to 1024.
         sample_format (int, optional): The format of the audio samples. Defaults to pyaudio.paInt16.
         channels (int, optional): The number of audio channels. Defaults to 2.
         fs (int, optional): The sample rate of the audio. Defaults to 44100.
@@ -159,17 +157,17 @@ def search_and_download_preview(sp, track_name):
         preview_file = f'./wav/{results["tracks"]["items"][0]["name"]}.wav'
 
         # print(preview_url)
-        if preview_url:
-            urlretrieve(preview_url, preview_file)
+
+        # print("No se pudo encontrar ninguna previsualización.")
+        artist_id = results["tracks"]["items"][0]["artists"][0]["id"]
+        results2 = sp.artist(artist_id)
+        if results2:
+            print(results2["genres"][0])
+            return results2["genres"][0]
         else:
-            # print("No se pudo encontrar ninguna previsualización.")
-            artist_id = results["tracks"]["items"][0]["artists"][0]["id"]
-            results2 = sp.artist(artist_id)
-            if results2:
-                print(results2["genres"][0])
-                return results2["genres"][0]
-            else:
-                print("No genres available.")
+            print("No genres available.")
+            return None
+
     except NameError:
         print(NameError)
         return False

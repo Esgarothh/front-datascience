@@ -30,13 +30,14 @@ def extract_features_from_wav(wav_path, num_mfcc=13, n_fft=2048, hop_length=512,
 
     :param wav_path (str): Path to the WAV file
     :param num_mfcc (int): Number of coefficients to extract
-    :param n_fft (int): Interval we consider to apply FFT. Measured in # of samples
+    # of samples
+    :param n_fft (int): Interval we consider to apply FFT. Measured in
     :param hop_length (int): Sliding window for FFT. Measured in # of samples
     :param num_segments (int): Number of segments to divide the audio file into
     :return: List of MFCC features
     """
     desired_sample_rate = 22050  # Replace with the sample rate used during training
-
+    desired_duration = 30
     # Load audio file and resample if necessary
     file_path = wav_path
     signal, current_sample_rate = librosa.load(file_path, sr=None)
@@ -45,7 +46,12 @@ def extract_features_from_wav(wav_path, num_mfcc=13, n_fft=2048, hop_length=512,
         signal = librosa.resample(
             signal, orig_sr=current_sample_rate, target_sr=desired_sample_rate)
 
-    # Now 'signal' contains the audio data with the desired sample rate
+    current_duration = librosa.get_duration(y=signal, sr=desired_sample_rate)
+
+    if current_duration < desired_duration:
+        num_samples_to_pad = int(
+            (desired_duration - current_duration) * desired_sample_rate)
+        signal = np.pad(signal, (0, num_samples_to_pad), mode='constant')
 
     # list to store MFCC features
     features = []
@@ -105,5 +111,5 @@ def predecir(filepath):
 
     new_model = tf.keras.models.load_model('my_model.h5')
     extracted_features = extract_features_from_wav(filepath)
-    
-    return predict_one(new_model, extracted_features[4], 0)
+
+    return predict_one(new_model, extracted_features[0], 0)
