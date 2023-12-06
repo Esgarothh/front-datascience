@@ -10,6 +10,7 @@ from urllib.request import urlretrieve
 from red import predecir
 
 
+<<<<<<< HEAD
 def button(filename):
     sp = authenticate_spotify()
     record_audio(filename)
@@ -48,6 +49,8 @@ def authenticate_spotify():
         )
     )
 # Grabar
+=======
+>>>>>>> origin/main
 
 
 def record_audio(filename, seconds=10, chunk=1024, sample_format=pyaudio.paInt16,
