@@ -1,6 +1,4 @@
 
-from email import generator
-from tkinter import N
 from flask import Flask, render_template, request
 from soundapi import button
 app = Flask(__name__)
@@ -13,17 +11,17 @@ items = [
 
 @app.route('/')
 def index():
-    return render_template('index.html')
-
-
-@app.route('/test', methods=['GET'])
-def test():
-
+    
     artist = "artista"
     track = "cancion"
     genre_predicted = "genero"
 
-    return render_template('result.html', artist=artist, track=track, genre_predicted=genre_predicted, items=items)
+    return render_template('index.html', artist=artist, track=track, genre_predicted=genre_predicted, items=items)
+
+
+@app.route('/test', methods=['GET'])
+def test():
+    return render_template('result.html')
 
 
 @app.route('/record', methods=['GET'])
@@ -44,7 +42,7 @@ def record():
     # ...
 
     # Pass the song information to the template
-    return render_template('result.html', artist=artist_name, track=track_name, genre_predicted=genre_predicted, real_genre=real_genre, items=items)
+    return render_template('result.html', artist=artist_name, track=track_name, genre_predicted=genre_predicted, genre=real_genre, items=items)
 
 
 if __name__ == '__main__':

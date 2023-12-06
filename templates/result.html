@@ -2,34 +2,168 @@
 <html lang="en">
 
 <head>
+    <!-- Meta tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE MOST OVERFITTED GENRE RECOGNIZER IN THE UDP </title>
+    <title>Result</title>
+    
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+        body {
+            font-family: 'Roboto', sans-serif;            
+            text-align: center;
+            color: black;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('{{ url_for("static", filename="fondo.gif") }}');
+            background-repeat: no-repeat;
+            background-size: auto;
+            background-position: center top;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente */
+            padding: 20px;
+            border-radius: 10px;
+            width: 90vw; /* Ancho del contenedor en relación al viewport width */
+            max-width: 1100px; /* Ancho máximo del contenedor */
+            display: flex;
+        }
+
+        .left-section,
+        .right-section {
+            flex: 1; /* Ambas secciones ocupan el mismo espacio */
+            padding: 10px;
+        }
+
+        .left-section img,
+        .right-section img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .left-section,
+        .right-section {
+            height: 80vh; /* Ajuste de altura del contenedor */
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1.5em;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            width: 150px;
+            margin: 20px 10px;
+        }
+
+        #yesButton {
+            background-color: #4CAF50;
+        }
+
+        #yesButton:hover {
+            background-color: #45a049;
+        }
+
+        #noButton {
+            background-color: #ff7f7f; /* Rojo más pálido */
+        }
+
+        #noButton:hover {
+            background-color: #ff5c5c; /* Rojo más pálido al pasar el cursor */
+        }
+
+    </style>
 </head>
 
 <body>
-    <h1>Song Recognition Result</h1>
-    <p>Artist: {{ artist }}</p>
-    <p>Track: {{ track }}</p>
-    <p>Género predicho= {{genre_predicted}}</p>
-    <audio controls>
-        <source src="{{ preview_url }}" type="audio/mp3">
-        Your browser does not support the audio tag.
-    </audio>
-    <table border="1">
-        <tr>
-            <th>Cancion</th>
-            <th>Genero Predicho</th>
-            <th>Genero Real</th>
-        </tr>
-        {% for item in items %}
-        <tr>
-            <td>{{ item['cancion'] }}</td>
-            <td>{{ item['genero_predicho'] }}</td>
-            <td>{{ item['genero_real'] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="container">
+        <div class="left-section">
+            <h1>Song Recognition Result</h1>
+            <h3>Artist: {{ artist }}</h3>
+            <h3>Track: {{ track }}</h3>
+            <h3>Genero: {{ genre }}</h3>
+              <audio controls>
+                <source src="{{ preview_url }}" type="audio/mp3">
+                Your browser does not support the audio tag.
+            </audio>
+
+        </div>
+        <div class="right-section">
+            <h1>El género de tu canción es:</h1>
+            {% if genre_predicted %}
+                {% if genre_predicted == 'blues' %}
+                    <h1>Blues</h1>
+                    <img src="{{ url_for('static', filename='blues.jpeg') }}" alt="Pop" style="width: 300px; height: 300px;">
+                {% endif %}
+                {% if genre_predicted == 'classical' %}
+                    <h1> Classical</h1>
+                    <img src="{{ url_for('static', filename='classical.jpeg') }}" alt="Classical" style="width: 300px; height: 300px;">
+                {% endif %}
+                {% if genre_predicted == 'country' %}
+                    <h1>Country</h1>
+                    <img src="{{ url_for('static', filename='country.jpeg') }}" alt="Country" style="width: 300px; height: 300px;">
+                {% endif %}
+                {% if genre_predicted == 'disco' %}
+                    <h1>Disco</h1>
+                    <img src="{{ url_for('static', filename='disco.jpeg') }}" alt="Disco" style="width: 300px; height: 300px;">
+                {% endif %}
+                {% if genre_predicted == 'hiphop' %}
+                    <h1>Hip Hop</h1>
+                    <img src="{{ url_for('static', filename='hiphop.jpg') }}" alt="Hip Hop" style="width: 300px; height: 300px;">
+                {% endif %}
+                {% if genre_predicted == 'jazz' %}
+                    <h1>Jazz</h1>
+                    <img src="{{ url_for('static', filename='jazz.png') }}" alt="Jazz" style="width: 300px; height: 300px;">
+                {% endif %}
+                {% if genre_predicted == 'metal' %}
+                    <h1>Metal</h1>
+                    <img src="{{ url_for('static', filename='metal.jpeg') }}" alt="Metal" style="width: 300px; height: 300px;">
+                {% endif %}
+                {% if genre_predicted == 'pop' %}
+                    <h1>Pop</h1>
+                    <img src="{{ url_for('static', filename='pop.jpeg') }}" alt="Pop" style="width: 300px; height: 300px;">
+                {% endif %}
+                {% if genre_predicted == 'reggae' %}
+                    <h1>Reggae</h1>
+                    <img src="{{ url_for('static', filename='reggae.png') }}" alt="Reggae" style="width: 300px; height: 300px;">
+                {% endif %}
+                {% if genre_predicted == 'rock' %}
+                    <h1>Rock</h1>
+                    <img src="{{ url_for('static', filename='rock.jpeg') }}" alt="Rock" style="width: 300px; height: 300px;">
+                {% endif %}
+            {% else %}
+                <h1>{{ genre_predicted }}</h1>
+                <img src="{{ url_for('static', filename='generico.jpeg') }}" alt="Generic" style="width: 300px; height: 300px;">
+            {% endif %}
+            
+            <h2>¿Volver a comenzar?</h2>
+            <div class="btn-group">
+                <button id="yesButton" class="btn" onclick="window.location.href = '/';">Volver</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
+

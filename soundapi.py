@@ -15,14 +15,14 @@ def button(filename):
     record_audio(filename)
     output = execute_recognition_command(filename)
     genre_predicted = predecir('record.wav')
-
+    print("OUTPUT",output)
     if output:
         artist_name, track_name = extract_artist_and_track(output)
         print(track_name)
         genero = search_and_download_preview(sp, track_name)
         if not genero:
             genre_predicted, artist_name, track_name, real_genre = genRandomGenre(
-            ), "No se encontró el artista", "No se encontró el nombre de la canción", "pop"
+            ), "No se encontró el artista", "No se encontró el nombre de la canción", "blues"
             print(genre_predicted)
             return genre_predicted, artist_name, track_name, real_genre
 
@@ -31,7 +31,7 @@ def button(filename):
 
     else:
         genre_predicted, artist_name, track_name, real_genre = genRandomGenre(
-        ), "Artist Name", "Track_Name", "pop"
+        ), "Artist Name", "Track_Name", "classical"
         print(genre_predicted)
         return genre_predicted, artist_name, track_name, real_genre
         # print("No se pudo reconocer la canción.")
